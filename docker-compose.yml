@@ -35,6 +35,7 @@ services:
       PDNS_GMYSQL_PASSWORD: "powerdns"
       PDNS_GMYSQL_USER: "powerdns"
       PDNS_JSON_INTERFACE: "yes"
+      PDNS_LOG_DNS_QUERIES: "yes"
       PDNS_RECURSOR_SERVER: "pdns_recursor"
       PDNS_WEBSERVER_ADDRESS: "0.0.0.0"
       PDNS_WEBSERVER_PASSWORD: "changeme"
