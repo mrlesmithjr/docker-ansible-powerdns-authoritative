@@ -23,7 +23,6 @@
         port: 3306
         host: "{{ pdns_gmysql_host }}"
         delay: 10
-      register: "mysql_ready"
       changed_when: false
 
     - name: Checking If DB Tables Exist
@@ -34,7 +33,6 @@
                -h {{ pdns_gmysql_host }}
                -e "show tables from {{ pdns_gmysql_dbname }};"
       register: "pdns_tables"
-      when: mysql_ready.changed
 
     - name: Importing PDNS Schema
       mysql_db:
