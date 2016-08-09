@@ -43,6 +43,10 @@ ENV PDNS_WEBSERVER yes
 # Copy PDNS SQL file
 COPY config/pdns.sql /
 
+# Copy Ansible PDNS config playbook
+COPY pdns_config.yml /
+COPY config/pdns.conf.j2 /
+
 # Copy entrypoint script and make executable
 COPY docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh

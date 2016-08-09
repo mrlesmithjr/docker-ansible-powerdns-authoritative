@@ -6,6 +6,30 @@
   tasks:
     - name: Configuring PowerDNS
       template:
-        src: "/pdns_conf.j2"
+        src: "/pdns.conf.j2"
         dest: "/etc/powerdns/pdns.conf"
-        
+
+    - name: Waiting For SQL Connection On DB Container
+      wait_for:
+        port: 3306
+        host: "{{ pdns_gmysql_host }}"
+        delay: 10
+
+    - name: Checking If DB Tables Exist
+      command: >
+               mysql
+               -u {{ pdns_gmysql_user }}
+               --password={{ pdns_gmysql_password }}
+               -h {{ pdns_gmysql_host }}
+               -e "show tables from {{ pdns_gmysql_dbname }};"
+      register: "pdns_tables"
+
+    - name: Importing PDNS Schema
+      mysql_db:
+        login_host: "{{ pdns_gmysql_host }}"
+        login_password: "{{ pdns_gmysql_password }}"
+        login_user: "{{ pdns_gmysql_user }}"
+        name: "{{ pdns_gmysql_dbname }}"
+        state: "import"
+        target: "/pdns.sql"
+      when: ('domains' not in pdns_tables.stdout_lines)

@@ -3,32 +3,19 @@
 PDNS_RECURSOR_SERVER_IP="$(ping -q -c 1 -t 1 $PDNS_RECURSOR_SERVER | grep PING | sed -e "s/).*//" | sed -e "s/.*(//")"
 
 # Configure powerdns
-cat > /etc/powerdns/pdns.conf <<EOF
-allow-dnsupdate-from=$PDNS_ALLOW_DDNS_UPDATE_FROM
-experimental-api-key=$PDNS_API_KEY
-experimental-dnsupdate=$PDNS_ALLOW_DDNS_UPDATE
-experimental-json-interface=$PDNS_JSON_INTERFACE
-gmysql-dbname=$PDNS_GMYSQL_DBNAME
-gmysql-host=$PDNS_GMYSQL_HOST
-gmysql-password=$PDNS_GMYSQL_PASSWORD
-gmysql-user=$PDNS_GMYSQL_USER
-launch=gmysql
-recursor=$PDNS_RECURSOR_SERVER_IP
-webserver-address=$PDNS_WEBSERVER_ADDRESS
-webserver-password=$PDNS_WEBSERVER_PASSWORD
-webserver-port=$PDNS_WEBSERVER_PORT
-webserver=$PDNS_WEBSERVER
-EOF
-
-# Wait for DB to start
-sleep 20
+ansible-playbook -i "localhost," -c local --extra-vars="pdns_allow_ddns_update_from=$PDNS_ALLOW_DDNS_UPDATE_FROM \
+pdns_api_key=$PDNS_API_KEY pdns_allow_ddns_update=$PDNS_ALLOW_DDNS_UPDATE pdns_json_interface=$PDNS_JSON_INTERFACE \
+pdns_gmysql_dbname=$PDNS_GMYSQL_DBNAME pdns_gmysql_host=$PDNS_GMYSQL_HOST pdns_gmysql_password=$PDNS_GMYSQL_PASSWORD \
+pdns_gmysql_user=$PDNS_GMYSQL_USER pdns_recursor_server_ip=$PDNS_RECURSOR_SERVER_IP \
+pdns_webserver_address=$PDNS_WEBSERVER_ADDRESS pdns_webserver_password=$PDNS_WEBSERVER_PASSWORD \
+pdns_webserver_port=$PDNS_WEBSERVER_PORT pdns_webserver=$PDNS_WEBSERVER" /pdns_config.yml
 
 # Check if DB imported
-if [[ ! -f /db_imported ]]; then
-  mysql --host=$PDNS_GMYSQL_HOST --user=$PDNS_GMYSQL_USER \
-  --password=$PDNS_GMYSQL_PASSWORD --database=$PDNS_GMYSQL_DBNAME < /pdns.sql && \
-  touch /db_imported
-fi
+# if [[ ! -f /db_imported ]]; then
+#   mysql --host=$PDNS_GMYSQL_HOST --user=$PDNS_GMYSQL_USER \
+#   --password=$PDNS_GMYSQL_PASSWORD --database=$PDNS_GMYSQL_DBNAME < /pdns.sql && \
+#   touch /db_imported
+# fi
 
 # Wait for DB and Recursor to start
 sleep 10
