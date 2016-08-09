@@ -15,7 +15,7 @@ Below are the defaults in the `Authoritative/Dockerfile` for Authoritative Serve
 ```
 # Define environment variables
 ENV PDNS_ALLOW_DDNS_UPDATE yes
-ENV PDNS_ALLOW_DDNS_UPDATE_FROM 0.0.0.0
+ENV PDNS_ALLOW_DDNS_UPDATE_FROM 0.0.0.0/0
 ENV PDNS_API_KEY changeme
 ENV PDNS_GMYSQL_DBNAME powerdns
 ENV PDNS_GMYSQL_HOST db
