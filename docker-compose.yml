@@ -27,27 +27,23 @@ services:
       - "8081:8081"
     restart: always
     environment:
-      MYSQL_DB_HOSTNAME: db
-      MYSQL_DB_USERNAME: powerdns
-      MYSQL_DB_PASSWORD: powerdns
-      MYSQL_DB_NAME: powerdns
-      MYSQL_DB_PORT: 3306
-
+      PDNS_ALLOW_DDNS_UPDATE: yes
+      PDNS_ALLOW_DDNS_UPDATE_FROM: 0.0.0.0/0
+      PDNS_API_KEY: changeme
+      PDNS_GMYSQL_DBNAME: powerdns
+      PDNS_GMYSQL_HOST: db
+      PDNS_GMYSQL_PASSWORD: powerdns
+      PDNS_GMYSQL_USER: powerdns
+      PDNS_JSON_INTERFACE: yes
+      PDNS_RECURSOR_SERVER: pdns_recursor
+      PDNS_WEBSERVER_ADDRESS: 0.0.0.0
+      PDNS_WEBSERVER_PASSWORD: changeme
+      PDNS_WEBSERVER_PORT: 8081
+      PDNS_WEBSERVER: yes
   pdns_recursor:
     build: ./Recursor
     image: docker-powerdns-recursor
-    # links:
-    #   - db
-    # ports:
-    #   - "53:53/udp"
-    #   - "8081:8081"
     restart: always
-    # environment:
-    #   MYSQL_DB_HOSTNAME: db
-    #   MYSQL_DB_USERNAME: powerdns
-    #   MYSQL_DB_PASSWORD: powerdns
-    #   MYSQL_DB_NAME: powerdns
-    #   MYSQL_DB_PORT: 3306
 
 volumes:
   db:
