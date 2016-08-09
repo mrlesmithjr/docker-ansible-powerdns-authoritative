@@ -18,6 +18,7 @@ webserver-port=$PDNS_WEBSERVER_PORT
 webserver=$PDNS_WEBSERVER
 EOF
 
+# Wait for DB to start
 sleep 20
 
 # Check if DB imported
@@ -27,6 +28,7 @@ if [[ ! -f /db_imported ]]; then
   touch /db_imported
 fi
 
+# Wait for DB and Recursor to start
 sleep 10
 
 if [ "$#" -gt 0 ]; then

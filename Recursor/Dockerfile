@@ -36,4 +36,3 @@ ENV PDNS_RECURSOR_LOCAL_ADDRESS 0.0.0.0
 
 # Execute
 CMD ["docker-entrypoint.sh"]
-#CMD ["bash"]
