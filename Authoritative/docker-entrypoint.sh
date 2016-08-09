@@ -4,7 +4,9 @@ PDNS_RECURSOR_SERVER_IP="$(ping -q -c 1 -t 1 $PDNS_RECURSOR_SERVER | grep PING |
 
 # Configure powerdns
 cat > /etc/powerdns/pdns.conf <<EOF
+allow-dnsupdate-from=$PDNS_ALLOW_DDNS_UPDATE_FROM
 experimental-api-key=$PDNS_API_KEY
+experimental-dnsupdate=$PDNS_ALLOW_DDNS_UPDATE
 experimental-json-interface=$PDNS_JSON_INTERFACE
 gmysql-dbname=$PDNS_GMYSQL_DBNAME
 gmysql-host=$PDNS_GMYSQL_HOST
