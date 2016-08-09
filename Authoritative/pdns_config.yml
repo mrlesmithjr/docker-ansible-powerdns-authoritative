@@ -9,11 +9,21 @@
         src: "/pdns.conf.j2"
         dest: "/etc/powerdns/pdns.conf"
 
+# We need to give the SQL DB container time to init
     - name: Waiting For SQL Connection On DB Container
       wait_for:
         port: 3306
         host: "{{ pdns_gmysql_host }}"
-        delay: 15
+        delay: 20
+      changed_when: false
+
+# We want to check once more to ensure DB is up
+    - name: Checking One More Time For SQL Connection On DB Container
+      wait_for:
+        port: 3306
+        host: "{{ pdns_gmysql_host }}"
+      register: "mysql_ready"
+      changed_when: false
 
     - name: Checking If DB Tables Exist
       command: >
@@ -23,6 +33,7 @@
                -h {{ pdns_gmysql_host }}
                -e "show tables from {{ pdns_gmysql_dbname }};"
       register: "pdns_tables"
+      when: mysql_ready.changed
 
     - name: Importing PDNS Schema
       mysql_db:
