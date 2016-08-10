@@ -23,6 +23,7 @@ services:
       - db
       - pdns_recursor
     ports:
+      - "53:53"
       - "53:53/udp"
       - "8081:8081"
     restart: always
@@ -41,10 +42,13 @@ services:
       PDNS_WEBSERVER_PASSWORD: "changeme"
       PDNS_WEBSERVER_PORT: "8081"
       PDNS_WEBSERVER: "yes"
+
   pdns_recursor:
     build: ./Recursor
     image: docker-powerdns-recursor
     restart: always
+    environment:
+      PDNS_RECURSOR_LOCAL_ADDRESS: "0.0.0.0"
 
 volumes:
   db:
