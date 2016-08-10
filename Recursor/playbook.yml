@@ -22,10 +22,6 @@
         force: "yes"
       with_items:
         - 'dnsutils'
-        # - 'git'
-        # - 'jq'
-        # - 'python-mysqldb'
-        # - 'mysql-client'
 
     - name: Installing Powerdns Recursor
       apt:
