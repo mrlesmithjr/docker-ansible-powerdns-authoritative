@@ -14,19 +14,20 @@ Environment settings for Authoritative Server
 Below are the defaults in the `Authoritative/Dockerfile` for Authoritative Server.
 ```
 # Define environment variables
-ENV PDNS_ALLOW_DDNS_UPDATE yes
-ENV PDNS_ALLOW_DDNS_UPDATE_FROM 0.0.0.0/0
-ENV PDNS_API_KEY changeme
-ENV PDNS_GMYSQL_DBNAME powerdns
-ENV PDNS_GMYSQL_HOST db
-ENV PDNS_GMYSQL_PASSWORD powerdns
-ENV PDNS_GMYSQL_USER powerdns
-ENV PDNS_JSON_INTERFACE yes
-ENV PDNS_RECURSOR_SERVER pdns_recursor
-ENV PDNS_WEBSERVER_ADDRESS 0.0.0.0
-ENV PDNS_WEBSERVER_PASSWORD changeme
-ENV PDNS_WEBSERVER_PORT 8081
-ENV PDNS_WEBSERVER yes
+ENV PDNS_ALLOW_DDNS_UPDATE=yes \
+    PDNS_ALLOW_DDNS_UPDATE_FROM=0.0.0.0/0 \
+    PDNS_API_KEY=changeme \
+    PDNS_GMYSQL_DBNAME=powerdns \
+    PDNS_GMYSQL_HOST=db \
+    PDNS_GMYSQL_PASSWORD=powerdns \
+    PDNS_GMYSQL_USER=powerdns \
+    PDNS_JSON_INTERFACE=yes \
+    PDNS_LOG_DNS_QUERIES=yes \
+    PDNS_RECURSOR_SERVER=pdns_recursor \
+    PDNS_WEBSERVER_ADDRESS=0.0.0.0 \
+    PDNS_WEBSERVER_PASSWORD=changeme \
+    PDNS_WEBSERVER_PORT=8081 \
+    PDNS_WEBSERVER=yes
 ```
 
 Usage
