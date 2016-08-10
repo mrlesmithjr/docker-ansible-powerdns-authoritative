@@ -22,9 +22,6 @@ RUN apt-get -y clean && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Copy recursor config
-#COPY config/recursor.conf /etc/powerdns/recursor.conf
-
 # Copy entrypoint script and make executable
 COPY docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
@@ -32,7 +29,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 # Expose port(s)
 EXPOSE 53 53/udp
 
-ENV PDNS_RECURSOR_LOCAL_ADDRESS 0.0.0.0
+ENV PDNS_RECURSOR_LOCAL_ADDRESS=0.0.0.0
 
 # Execute
 CMD ["docker-entrypoint.sh"]
