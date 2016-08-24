@@ -1,5 +1,13 @@
 Repo Info
 =========
+This repo contains both Authoritative and Recursor versions 3.x...  
+
+Each of these are available separately using [Docker] hub as:
+`mrlesmithjr/powerdns-authoritative`  
+`mrlesmithjr/powerdns-recursor`
+
+Consuming using `docker-compose`
+--------------------------------
 Builds [Docker] images for the following and links them together using `docker-compose`.
 * `MySQL`
   * `tcp/33306`
