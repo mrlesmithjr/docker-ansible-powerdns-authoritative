@@ -1,10 +1,10 @@
 Repo Info
 =========
-This repo contains both Authoritative and Recursor versions 3.x...  
+This repo contains both PowerDNS Authoritative and Recursor versions 3.x...  
 
 Each of these are available separately using [Docker] hub as:
-`mrlesmithjr/powerdns-authoritative`  
-`mrlesmithjr/powerdns-recursor`
+`mrlesmithjr/powerdns-authoritative:3.x`  
+`mrlesmithjr/powerdns-recursor:3.x`
 
 Consuming using `docker-compose`
 --------------------------------
