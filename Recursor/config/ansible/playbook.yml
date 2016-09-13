@@ -4,7 +4,7 @@
   become: true
   vars:
     - pdns_download_url: 'https://downloads.powerdns.com/releases/deb'
-    - pdns_server_version: '3.4.9-1'
+    - pdns_recursor_version: '3.7.3-1'
   tasks:
     - name: Installing ca-certificates
       apt:
@@ -20,14 +20,12 @@
         name: "{{ item }}"
         state: "present"
         force: "yes"
+        install_recommends: no
       with_items:
         - 'dnsutils'
-        # - 'git'
-        - 'jq'
-        - 'python-mysqldb'
-        - 'mysql-client'
 
-    - name: Installing Powerdns Authoritative
+    - name: Installing Powerdns Recursor
       apt:
-        deb: "{{ pdns_download_url }}/pdns-static_{{ pdns_server_version }}_amd64.deb"
+        deb: "{{ pdns_download_url }}/pdns-recursor_{{ pdns_recursor_version }}_amd64.deb"
         state: "present"
+        install_recommends: no
