@@ -13,7 +13,7 @@ services:
       MYSQL_USER: "powerdns"
       MYSQL_PASSWORD: "powerdns"
 
-  pdns-authorative:
+  pdns-authoritative:
     depends_on:
       - "db"
       - "pdns-recursor"

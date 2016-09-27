@@ -11,17 +11,6 @@ Each of these are available separately using [Docker] hub as:
 `mrlesmithjr/powerdns-authoritative:4.x`  
 `mrlesmithjr/powerdns-recursor:4.x`
 
-Consuming using `docker-compose`
---------------------------------
-Builds [Docker] images for the following and links them together using `docker-compose`.
-* `MySQL`
-  * `tcp/33306`
-* `PowerDNS-Authoritative`
-  * `tcp/53`
-  * `udp/53`
-  * `tcp/8081` - PDNS API
-* `PowerDNS-Recursor`
-
 Environment settings for Authoritative Server
 ---------------------------------------------
 Below are the defaults in the `Authoritative/Dockerfile` for Authoritative Server.
@@ -43,11 +32,52 @@ ENV PDNS_ALLOW_DDNS_UPDATE=yes \
     PDNS_WEBSERVER=yes
 ```
 
-Usage
------
+Consuming from command line:
+----------------------------
+Spin up DB:
+```
+docker run -d --name db -p 33306:3306 \
+  -e MYSQL_ROOT_PASSWORD="powerdns" \
+  -e MYSQL_DATABASE="powerdns" \
+  -e MYSQL_USER="powerdns" \
+  -e MYSQL_PASSWORD="powerdns" \
+  mrlesmithjr/mysql
+```
+
+Spin up PDNS Recursor:
+```
+docker run -d --name pdns-recursor \
+  -e PDNS_RECURSOR_LOCAL_ADDRESS="0.0.0.0" \
+  mrlesmithjr/powerdns-recursor:3.x
+```
+
+Spin up PDNS Authoritative:
+```
+docker run -d --name pdns-authoritative \
+  -p 53:53 -p 53:53/udp -p 8081:8081 \
+  --link db:db --link pdns-recursor:pdns-recursor \
+  -e PDNS_ALLOW_DDNS_UPDATE="yes" \
+  -e PDNS_ALLOW_DDNS_UPDATE_FROM="0.0.0.0/0" \
+  -e PDNS_API_KEY="changeme" \
+  -e PDNS_GMYSQL_DBNAME="powerdns" \
+  -e PDNS_GMYSQL_HOST="db" \
+  -e PDNS_GMYSQL_PASSWORD="powerdns" \
+  -e PDNS_GMYSQL_USER="powerdns" \
+  -e PDNS_JSON_INTERFACE="yes" \
+  -e PDNS_LOG_DNS_QUERIES="yes" \
+  -e PDNS_RECURSOR_SERVER="pdns-recursor" \
+  -e PDNS_WEBSERVER_ADDRESS="0.0.0.0" \
+  -e PDNS_WEBSERVER_PASSWORD="changeme" \
+  -e PDNS_WEBSERVER_PORT="8081" \
+  -e PDNS_WEBSERVER="yes" \
+  mrlesmithjr/powerdns-authoritative:3.x
+```
+
+Consuming using `docker-compose`
+--------------------------------
 * Spin up containers
 ```
-docker-compose up -d --build
+docker-compose up -d
 ```
 
 The DB port `33306` is exposed so that you COULD spin up
