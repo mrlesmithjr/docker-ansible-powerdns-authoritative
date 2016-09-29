@@ -77,7 +77,7 @@ docker run -d --name pdns-authoritative \
   -e PDNS_WEBSERVER_PASSWORD="changeme" \
   -e PDNS_WEBSERVER_PORT="8081" \
   -e PDNS_WEBSERVER="yes" \
-  mrlesmithjr/powerdns-authoritative:3.4.8
+  mrlesmithjr/powerdns-authoritative:3.4.9
 ```
 
 Consuming using `docker-compose`
