@@ -1,35 +1,40 @@
 Repo Info
 =========
-This repo contains both PowerDNS Authoritative and Recursor for the following
+This repo contains PowerDNS Authoritative for the following
 versions..  
-`3.x` - latest  
-`4.x`
+`3.4.10` - latest
+`3.4.9`
+`3.4.8`
+`3.4.7`
+`4.x` - development
 
 Each of these are available separately using [Docker] hub as:
-`mrlesmithjr/powerdns-authoritative:3.x`  
-`mrlesmithjr/powerdns-recursor:3.x`  
-`mrlesmithjr/powerdns-authoritative:4.x`  
-`mrlesmithjr/powerdns-recursor:4.x`
+`mrlesmithjr/powerdns-authoritative:3.4.10`
+`mrlesmithjr/powerdns-authoritative:3.4.9`
+`mrlesmithjr/powerdns-authoritative:3.4.8`
+`mrlesmithjr/powerdns-authoritative:3.4.7`
+`mrlesmithjr/powerdns-authoritative:4.x`
 
 Environment settings for Authoritative Server
 ---------------------------------------------
 Below are the defaults in the `Authoritative/Dockerfile` for Authoritative Server.
 ```
 # Define environment variables
-ENV PDNS_ALLOW_DDNS_UPDATE=yes \
-    PDNS_ALLOW_DDNS_UPDATE_FROM=0.0.0.0/0 \
-    PDNS_API_KEY=changeme \
-    PDNS_GMYSQL_DBNAME=powerdns \
-    PDNS_GMYSQL_HOST=db \
-    PDNS_GMYSQL_PASSWORD=powerdns \
-    PDNS_GMYSQL_USER=powerdns \
-    PDNS_JSON_INTERFACE=yes \
-    PDNS_LOG_DNS_QUERIES=yes \
-    PDNS_RECURSOR_SERVER=pdns_recursor \
-    PDNS_WEBSERVER_ADDRESS=0.0.0.0 \
-    PDNS_WEBSERVER_PASSWORD=changeme \
-    PDNS_WEBSERVER_PORT=8081 \
-    PDNS_WEBSERVER=yes
+ENV PDNS_ALLOW_DDNS_UPDATE="yes" \
+    PDNS_ALLOW_DDNS_UPDATE_FROM="0.0.0.0/0" \
+    PDNS_API_KEY="changeme" \
+    PDNS_GMYSQL_DBNAME="powerdns" \
+    PDNS_GMYSQL_HOST="pdns-db" \
+    PDNS_GMYSQL_PASSWORD="powerdns" \
+    PDNS_GMYSQL_USER="powerdns" \
+    PDNS_JSON_INTERFACE="yes" \
+    PDNS_LOG_DNS_QUERIES="yes" \
+    PDNS_RECURSOR_SERVER="pdns-recursor" \
+    PDNS_RECURSOR_SERVER_PORT="5300"
+    PDNS_WEBSERVER_ADDRESS="0.0.0.0" \
+    PDNS_WEBSERVER_PASSWORD="changeme" \
+    PDNS_WEBSERVER_PORT="8081" \
+    PDNS_WEBSERVER="yes"
 ```
 
 Consuming from command line:
@@ -48,7 +53,8 @@ Spin up PDNS Recursor:
 ```
 docker run -d --name pdns-recursor \
   -e PDNS_RECURSOR_LOCAL_ADDRESS="0.0.0.0" \
-  mrlesmithjr/powerdns-recursor:3.x
+  -e PDNS_RECURSOR_LISTEN_PORT="5300" \
+  mrlesmithjr/powerdns-recursor:3.7.3
 ```
 
 Spin up PDNS Authoritative:
@@ -66,6 +72,7 @@ docker run -d --name pdns-authoritative \
   -e PDNS_JSON_INTERFACE="yes" \
   -e PDNS_LOG_DNS_QUERIES="yes" \
   -e PDNS_RECURSOR_SERVER="pdns-recursor" \
+  -e PDNS_RECURSOR_SERVER_PORT="5300" \
   -e PDNS_WEBSERVER_ADDRESS="0.0.0.0" \
   -e PDNS_WEBSERVER_PASSWORD="changeme" \
   -e PDNS_WEBSERVER_PORT="8081" \
