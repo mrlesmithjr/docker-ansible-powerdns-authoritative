@@ -11,10 +11,6 @@
         name: "ca-certificates"
         state: "latest"
 
-    - name: Installing dumb-init
-      apt:
-        deb: "https://github.com/Yelp/dumb-init/releases/download/v1.0.2/dumb-init_1.0.2_amd64.deb"
-
     - name: Installing Powerdns Pre-Reqs
       apt:
         name: "{{ item }}"
@@ -22,7 +18,6 @@
         force: "yes"
         install_recommends: no
       with_items:
-        - 'dnsutils'
         - 'jq'
         - 'python-mysqldb'
         - 'mysql-client'
